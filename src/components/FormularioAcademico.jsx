@@ -21,7 +21,7 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
     <main className="contenedor-principal">
       <section className="formulario-card">
         <div className="formulario-encabezado">
-          <span className="formulario-indicador">Paso 2 de 3</span>
+          <span className="formulario-indicador">Paso 2 de 4</span>
           <h2 className="formulario-titulo">Información Académica</h2>
           <p className="formulario-descripcion">
             Cuéntanos sobre tu formación académica más reciente.

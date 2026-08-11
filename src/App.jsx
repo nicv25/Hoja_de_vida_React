@@ -5,10 +5,11 @@ import Header from "./components/Header";
 import FormularioPersonal from "./components/FormularioPersonal";
 import FormularioAcademico from "./components/FormularioAcademico";
 import FormularioExperiencia from "./components/FormularioExperiencia";
+import ResumenHojaVida from "./components/ResumenHojaVida";
 import Footer from "./components/Footer";
 
 function App() {
-  // Controla qué formulario se muestra actualmente
+  // Controla qué paso se muestra actualmente
   const [pasoActual, setPasoActual] = useState("personal");
 
   // Objeto central con todos los datos de la hoja de vida
@@ -41,7 +42,7 @@ function App() {
 
   return (
     <div className="app">
-      <Header />
+      <Header pasoActual={pasoActual} />
 
       {pasoActual === "personal" && (
         <FormularioPersonal
@@ -65,6 +66,19 @@ function App() {
           datos={datosHojaVida}
           setDatos={setDatosHojaVida}
           onVolver={() => setPasoActual("academico")}
+          onSiguiente={() => setPasoActual("resumen")}
+        />
+      )}
+
+      {pasoActual === "resumen" && (
+        <ResumenHojaVida
+          datos={datosHojaVida}
+          onVolver={() => setPasoActual("experiencia")}
+          onFinalizar={() => {
+            alert("Hoja de vida registrada correctamente.");
+            console.log(datosHojaVida);
+
+          }}
         />
       )}
 

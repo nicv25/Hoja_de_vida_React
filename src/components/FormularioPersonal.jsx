@@ -2,7 +2,6 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
   const continuar = (e) => {
     e.preventDefault();
 
-    // Validación básica antes de avanzar
     if (
       !datos.nombres ||
       !datos.apellidos ||
@@ -21,7 +20,7 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
     <main className="contenedor-principal">
       <section className="formulario-card">
         <div className="formulario-encabezado">
-          <span className="formulario-indicador">Paso 1 de 3</span>
+          <span className="formulario-indicador">Paso 1 de 4</span>
           <h2 className="formulario-titulo">Información Personal</h2>
           <p className="formulario-descripcion">
             Registra tus datos básicos de contacto y presentación profesional.

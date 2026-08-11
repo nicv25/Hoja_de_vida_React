@@ -1,5 +1,5 @@
-function FormularioExperiencia({ datos, setDatos, onVolver }) {
-  const finalizar = (e) => {
+function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
+  const continuar = (e) => {
     e.preventDefault();
 
     if (
@@ -15,24 +15,21 @@ function FormularioExperiencia({ datos, setDatos, onVolver }) {
       return;
     }
 
-    alert("Hoja de vida registrada correctamente.");
-
-    // Aquí se enviarían todos los datos a la API:
-    console.log(datos);
+    onSiguiente();
   };
 
   return (
     <main className="contenedor-principal">
       <section className="formulario-card">
         <div className="formulario-encabezado">
-          <span className="formulario-indicador">Paso 3 de 3</span>
+          <span className="formulario-indicador">Paso 3 de 4</span>
           <h2 className="formulario-titulo">Experiencia</h2>
           <p className="formulario-descripcion">
             Registra tu experiencia laboral más reciente.
           </p>
         </div>
 
-        <form className="formulario" onSubmit={finalizar}>
+        <form className="formulario" onSubmit={continuar}>
           <div className="campo">
             <label>Empresa</label>
             <input
@@ -120,10 +117,7 @@ function FormularioExperiencia({ datos, setDatos, onVolver }) {
             <input
               type="file"
               onChange={(e) =>
-                setDatos({
-                  ...datos,
-                  certificadoLaboral: e.target.files[0],
-                })
+                setDatos({ ...datos, certificadoLaboral: e.target.files[0] })
               }
             />
           </div>
@@ -133,7 +127,7 @@ function FormularioExperiencia({ datos, setDatos, onVolver }) {
               Volver
             </button>
 
-            <button type="submit">Finalizar</button>
+            <button type="submit">Continuar</button>
           </div>
         </form>
       </section>
