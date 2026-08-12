@@ -1,4 +1,9 @@
+import { useState } from "react";
+
 function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
+  // Estado temporal para escribir un nuevo curso
+  const [nuevoCurso, setNuevoCurso] = useState("");
+
   const continuar = (e) => {
     e.preventDefault();
 
@@ -15,6 +20,29 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
     }
 
     onSiguiente();
+  };
+
+  // Agrega el curso escrito al arreglo de cursos
+  const agregarCurso = () => {
+    if (nuevoCurso.trim() === "") {
+      alert("Escribe el nombre del curso antes de agregarlo.");
+      return;
+    }
+
+    setDatos({
+      ...datos,
+      cursos: [...datos.cursos, nuevoCurso],
+    });
+
+    setNuevoCurso("");
+  };
+
+  // Elimina un curso según su posición en el arreglo
+  const eliminarCurso = (indice) => {
+    setDatos({
+      ...datos,
+      cursos: datos.cursos.filter((_, i) => i !== indice),
+    });
   };
 
   return (
@@ -105,6 +133,44 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
                 setDatos({ ...datos, promedio: e.target.value })
               }
             />
+          </div>
+
+          <div className="linea-separadora"></div>
+
+          <div className="campo">
+            <label>Cursos Realizados</label>
+
+            <div className="agregar-curso">
+              <input
+                type="text"
+                placeholder="Ejemplo: HTML y CSS"
+                value={nuevoCurso}
+                onChange={(e) => setNuevoCurso(e.target.value)}
+              />
+
+              <button type="button" onClick={agregarCurso}>
+                + Agregar
+              </button>
+            </div>
+
+            {datos.cursos.length === 0 ? (
+              <p className="texto-ayuda">Aún no has agregado ningún curso.</p>
+            ) : (
+              <ul className="lista-cursos">
+                {datos.cursos.map((curso, indice) => (
+                  <li key={indice} className="item-curso">
+                    <span>{curso}</span>
+                    <button
+                      type="button"
+                      className="boton-eliminar"
+                      onClick={() => eliminarCurso(indice)}
+                    >
+                      Eliminar
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className="botones">

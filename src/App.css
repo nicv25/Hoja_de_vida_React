@@ -161,6 +161,18 @@ body {
   cursor: pointer;
 }
 
+.texto-ayuda {
+  color: #667085;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.linea-separadora {
+  height: 1px;
+  background-color: #e4e9f0;
+  margin: 4px 0;
+}
+
 /* =========================
    BOTONES
 ========================= */
@@ -183,7 +195,6 @@ body {
   transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-/* Botón "Continuar" / "Finalizar" (submit) */
 .botones button[type="submit"] {
   background-color: #2563eb;
   color: #ffffff;
@@ -194,7 +205,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* Botón "Volver" */
 .botones button[type="button"] {
   background-color: #eef2f6;
   color: #344054;
@@ -206,50 +216,71 @@ body {
 }
 
 /* =========================
-   FOOTER
+   LISTA DE CURSOS
 ========================= */
 
-.footer {
-  width: min(1100px, 90%);
-  margin: 0 auto;
-  padding: 20px 0 28px;
-  color: #667085;
-  text-align: center;
-  font-size: 0.84rem;
+.agregar-curso {
+  display: flex;
+  gap: 10px;
 }
 
-.footer-texto,
-.footer-copy {
-  margin: 4px 0;
+.agregar-curso input {
+  flex: 1;
 }
 
-
-
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 700px) {
-  .contenedor-principal {
-    width: min(94%, 100%);
-    padding: 25px 0;
-  }
-
-  .formulario-encabezado,
-  .formulario {
-    padding: 24px 20px;
-  }
-
-  .botones {
-    flex-direction: column-reverse;
-  }
-
-  .botones button {
-    width: 100%;
-  }
+.agregar-curso button {
+  border: none;
+  border-radius: 8px;
+  padding: 0 18px;
+  background-color: #2563eb;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
+.agregar-curso button:hover {
+  background-color: #1d4ed8;
+}
+
+.lista-cursos {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item-curso {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid #e4e9f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+}
+
+.item-curso span {
+  color: #344054;
+  font-size: 0.92rem;
+}
+
+.boton-eliminar {
+  border: none;
+  background: none;
+  color: #dc2626;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 8px;
+}
+
+.boton-eliminar:hover {
+  text-decoration: underline;
+}
 
 /* =========================
    RESUMEN FINAL
@@ -281,8 +312,74 @@ body {
   margin-right: 4px;
 }
 
-.linea-separadora {
-  height: 1px;
-  background-color: #e4e9f0;
+.resumen-foto {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.foto-preview {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #e4e9f0;
+  box-shadow: 0 6px 16px rgba(23, 32, 51, 0.1);
+}
+
+.lista-cursos-resumen {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+
+.lista-cursos-resumen li {
+  color: #344054;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+  width: min(1100px, 90%);
+  margin: 0 auto;
+  padding: 20px 0 28px;
+  color: #667085;
+  text-align: center;
+  font-size: 0.84rem;
+}
+
+.footer-texto,
+.footer-copy {
   margin: 4px 0;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 700px) {
+  .contenedor-principal {
+    width: min(94%, 100%);
+    padding: 25px 0;
+  }
+
+  .formulario-encabezado,
+  .formulario {
+    padding: 24px 20px;
+  }
+
+  .botones {
+    flex-direction: column-reverse;
+  }
+
+  .botones button {
+    width: 100%;
+  }
+
+  .agregar-curso {
+    flex-direction: column;
+  }
 }

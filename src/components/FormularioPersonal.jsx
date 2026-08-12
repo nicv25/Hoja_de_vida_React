@@ -3,6 +3,7 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
     e.preventDefault();
 
     if (
+      !datos.foto ||
       !datos.nombres ||
       !datos.apellidos ||
       !datos.correo ||
@@ -28,6 +29,20 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
         </div>
 
         <form className="formulario" onSubmit={continuar}>
+          <div className="campo">
+            <label>Fotografía</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) =>
+                setDatos({ ...datos, foto: e.target.files[0] })
+              }
+            />
+            <small className="texto-ayuda">
+              Selecciona una imagen en formato JPG, JPEG o PNG.
+            </small>
+          </div>
+
           <div className="campo">
             <label>Nombres</label>
             <input

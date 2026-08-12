@@ -4,6 +4,9 @@ function ResumenHojaVida({ datos, onVolver, onFinalizar }) {
     onFinalizar();
   };
 
+  // Convierte el archivo de la foto en una URL temporal para poder mostrarla
+  const urlFoto = datos.foto ? URL.createObjectURL(datos.foto) : null;
+
   return (
     <main className="contenedor-principal">
       <section className="formulario-card">
@@ -18,6 +21,19 @@ function ResumenHojaVida({ datos, onVolver, onFinalizar }) {
         <form className="formulario" onSubmit={confirmar}>
           <div className="resumen-bloque">
             <h3 className="resumen-titulo">Información Personal</h3>
+
+            <div className="resumen-foto">
+              {urlFoto ? (
+                <img
+                  src={urlFoto}
+                  alt="Fotografía del aprendiz"
+                  className="foto-preview"
+                />
+              ) : (
+                <p className="texto-ayuda">No se adjuntó fotografía.</p>
+              )}
+            </div>
+
             <p><strong>Nombres:</strong> {datos.nombres}</p>
             <p><strong>Apellidos:</strong> {datos.apellidos}</p>
             <p><strong>Correo:</strong> {datos.correo}</p>
@@ -35,6 +51,17 @@ function ResumenHojaVida({ datos, onVolver, onFinalizar }) {
             <p><strong>Fecha de inicio:</strong> {datos.fechaInicioAcademico}</p>
             <p><strong>Fecha de finalización:</strong> {datos.fechaFinAcademico}</p>
             <p><strong>Promedio:</strong> {datos.promedio}</p>
+
+            <p><strong>Cursos realizados:</strong></p>
+            {datos.cursos.length === 0 ? (
+              <p className="texto-ayuda">No se registraron cursos.</p>
+            ) : (
+              <ul className="lista-cursos-resumen">
+                {datos.cursos.map((curso, indice) => (
+                  <li key={indice}>{curso}</li>
+                ))}
+              </ul>
+            )}
           </div>
 
           <div className="linea-separadora"></div>

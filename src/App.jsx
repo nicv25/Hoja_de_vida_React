@@ -15,6 +15,7 @@ function App() {
   // Objeto central con todos los datos de la hoja de vida
   const [datosHojaVida, setDatosHojaVida] = useState({
     // Información personal
+    foto: null,
     nombres: "",
     apellidos: "",
     correo: "",
@@ -28,6 +29,7 @@ function App() {
     fechaInicioAcademico: "",
     fechaFinAcademico: "",
     promedio: "",
+    cursos: [],
 
     // Experiencia laboral
     empresa: "",
@@ -77,7 +79,7 @@ function App() {
           onFinalizar={() => {
             alert("Hoja de vida registrada correctamente.");
             console.log(datosHojaVida);
-
+            // Aquí luego irá el fetch/axios.post hacia tu API Flask
           }}
         />
       )}
