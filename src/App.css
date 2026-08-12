@@ -32,10 +32,9 @@ body {
   margin: 0 auto;
   padding: 24px 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 20px;
 }
 
 .header-etiqueta {
@@ -116,6 +115,13 @@ body {
   padding: 32px 36px 36px;
 }
 
+.subtitulo-formulario {
+  margin: 0;
+  color: #344054;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
 .campo {
   display: flex;
   flex-direction: column;
@@ -161,18 +167,6 @@ body {
   cursor: pointer;
 }
 
-.texto-ayuda {
-  color: #667085;
-  font-size: 0.78rem;
-  line-height: 1.4;
-}
-
-.linea-separadora {
-  height: 1px;
-  background-color: #e4e9f0;
-  margin: 4px 0;
-}
-
 /* =========================
    BOTONES
 ========================= */
@@ -216,126 +210,180 @@ body {
 }
 
 /* =========================
-   LISTA DE CURSOS
+   CURSOS
 ========================= */
 
-.agregar-curso {
+.campo-cursos {
   display: flex;
   gap: 10px;
 }
 
-.agregar-curso input {
+.campo-cursos input {
   flex: 1;
 }
 
-.agregar-curso button {
+.boton-agregar {
+  background-color: #10b981;
+  color: #ffffff;
   border: none;
   border-radius: 8px;
-  padding: 0 18px;
-  background-color: #2563eb;
-  color: #ffffff;
-  cursor: pointer;
+  padding: 12px 18px;
   font-weight: 700;
-  font-size: 0.9rem;
-  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
-.agregar-curso button:hover {
-  background-color: #1d4ed8;
+.boton-agregar:hover {
+  background-color: #059669;
 }
 
 .lista-cursos {
   list-style: none;
-  margin: 12px 0 0;
   padding: 0;
+  margin: 12px 0 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .item-curso {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
+  padding: 12px 14px;
+  background-color: #f8fafc;
   border: 1px solid #e4e9f0;
   border-radius: 8px;
-  background-color: #f8fafc;
-}
-
-.item-curso span {
-  color: #344054;
-  font-size: 0.92rem;
 }
 
 .boton-eliminar {
+  background-color: #ef4444;
+  color: #ffffff;
   border: none;
-  background: none;
-  color: #dc2626;
-  cursor: pointer;
+  border-radius: 6px;
+  padding: 8px 14px;
   font-size: 0.85rem;
   font-weight: 600;
-  padding: 4px 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .boton-eliminar:hover {
-  text-decoration: underline;
+  background-color: #dc2626;
 }
 
 /* =========================
-   RESUMEN FINAL
+   EXPERIENCIAS
 ========================= */
 
-.resumen-bloque {
+.lista-experiencias {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 16px;
+  margin-top: 20px;
 }
 
-.resumen-titulo {
-  margin: 0 0 4px;
-  color: #172033;
-  font-size: 1rem;
-  font-weight: 700;
+.experiencia-card {
+  padding: 18px 20px;
+  background-color: #f8fafc;
+  border: 1px solid #e4e9f0;
+  border-radius: 10px;
 }
 
-.resumen-bloque p {
-  margin: 0;
-  color: #344054;
-  font-size: 0.92rem;
+.experiencia-card h4 {
+  margin: 0 0 10px;
+  color: #1f2937;
+  font-size: 1.1rem;
+}
+
+.experiencia-card p {
+  margin: 6px 0;
+  color: #475467;
+  font-size: 0.9rem;
   line-height: 1.5;
 }
 
-.resumen-bloque p strong {
-  color: #667085;
-  font-weight: 600;
-  margin-right: 4px;
+
+/* =========================
+   VISTA PREVIA / RESUMEN
+========================= */
+
+.seccion-resumen {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e4e9f0;
 }
 
-.resumen-foto {
+.seccion-resumen:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.seccion-titulo-resumen {
+  margin: 0 0 16px;
+  color: #172033;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.fila-resumen {
   display: flex;
-  justify-content: center;
-  margin-bottom: 12px;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f4f8;
 }
 
-.foto-preview {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid #e4e9f0;
-  box-shadow: 0 6px 16px rgba(23, 32, 51, 0.1);
+.fila-resumen:last-child {
+  border-bottom: none;
+}
+
+.etiqueta-resumen {
+  color: #667085;
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-width: 180px;
+}
+
+.valor-resumen {
+  color: #1f2937;
+  font-size: 0.9rem;
+  flex: 1;
+  word-break: break-word;
 }
 
 .lista-cursos-resumen {
-  margin: 4px 0 0;
-  padding-left: 18px;
+  margin: 0;
+  padding-left: 20px;
+  color: #1f2937;
 }
 
 .lista-cursos-resumen li {
-  color: #344054;
-  font-size: 0.92rem;
-  line-height: 1.6;
+  margin-bottom: 6px;
+}
+
+.card-experiencia-resumen {
+  background-color: #f8fafc;
+  border: 1px solid #e4e9f0;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.card-experiencia-resumen:last-child {
+  margin-bottom: 0;
+}
+
+/* Responsive para vista previa */
+@media (max-width: 600px) {
+  .fila-resumen {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .etiqueta-resumen {
+    min-width: auto;
+  }
 }
 
 /* =========================
@@ -379,7 +427,11 @@ body {
     width: 100%;
   }
 
-  .agregar-curso {
+  .campo-cursos {
     flex-direction: column;
+  }
+
+  .boton-agregar {
+    width: 100%;
   }
 }

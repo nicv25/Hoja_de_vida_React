@@ -1,20 +1,45 @@
+import { useState } from "react";
+
 function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
+  const [nuevaExperiencia, setNuevaExperiencia] = useState({
+    empresa: "",
+    cargo: "",
+    area: "",
+    fechaIngreso: "",
+    fechaRetiro: "",
+    funciones: "",
+    referenciaLaboral: "",
+    certificadoLaboral: null,
+  });
+
+  const agregarExperiencia = (e) => {
+    e.preventDefault();
+    setDatos({
+      ...datos,
+      experiencias: [...datos.experiencias, nuevaExperiencia],
+    });
+
+    setNuevaExperiencia({
+      empresa: "",
+      cargo: "",
+      area: "",
+      fechaIngreso: "",
+      fechaRetiro: "",
+      funciones: "",
+      referenciaLaboral: "",
+      certificadoLaboral: null,
+    });
+  };
+
+  const eliminarExperiencia = (indice) => {
+    setDatos({
+      ...datos,
+      experiencias: datos.experiencias.filter((_, i) => i !== indice),
+    });
+  };
+
   const continuar = (e) => {
     e.preventDefault();
-
-    if (
-      !datos.empresa ||
-      !datos.cargo ||
-      !datos.area ||
-      !datos.fechaIngreso ||
-      !datos.fechaRetiro ||
-      !datos.funciones ||
-      !datos.referenciaLaboral
-    ) {
-      alert("Por favor, completa todos los campos obligatorios.");
-      return;
-    }
-
     onSiguiente();
   };
 
@@ -22,7 +47,7 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
     <main className="contenedor-principal">
       <section className="formulario-card">
         <div className="formulario-encabezado">
-          <span className="formulario-indicador">Paso 3 de 4</span>
+          <span className="formulario-indicador">Paso 3 de 3</span>
           <h2 className="formulario-titulo">Experiencia</h2>
           <p className="formulario-descripcion">
             Registra tu experiencia laboral más reciente.
@@ -30,14 +55,16 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
         </div>
 
         <form className="formulario" onSubmit={continuar}>
+          <h3 className="subtitulo-formulario">Nueva Experiencia Laboral</h3>
+
           <div className="campo">
             <label>Empresa</label>
             <input
               type="text"
               placeholder="Nombre de la empresa"
-              value={datos.empresa}
+              value={nuevaExperiencia.empresa}
               onChange={(e) =>
-                setDatos({ ...datos, empresa: e.target.value })
+                setNuevaExperiencia({ ...nuevaExperiencia, empresa: e.target.value })
               }
             />
           </div>
@@ -47,9 +74,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
             <input
               type="text"
               placeholder="Cargo"
-              value={datos.cargo}
+              value={nuevaExperiencia.cargo}
               onChange={(e) =>
-                setDatos({ ...datos, cargo: e.target.value })
+                setNuevaExperiencia({ ...nuevaExperiencia, cargo: e.target.value })
               }
             />
           </div>
@@ -59,9 +86,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
             <input
               type="text"
               placeholder="Área de trabajo"
-              value={datos.area}
+              value={nuevaExperiencia.area}
               onChange={(e) =>
-                setDatos({ ...datos, area: e.target.value })
+                setNuevaExperiencia({ ...nuevaExperiencia, area: e.target.value })
               }
             />
           </div>
@@ -70,9 +97,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
             <label>Fecha de ingreso</label>
             <input
               type="date"
-              value={datos.fechaIngreso}
+              value={nuevaExperiencia.fechaIngreso}
               onChange={(e) =>
-                setDatos({ ...datos, fechaIngreso: e.target.value })
+                setNuevaExperiencia({ ...nuevaExperiencia, fechaIngreso: e.target.value })
               }
             />
           </div>
@@ -81,9 +108,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
             <label>Fecha de retiro</label>
             <input
               type="date"
-              value={datos.fechaRetiro}
+              value={nuevaExperiencia.fechaRetiro}
               onChange={(e) =>
-                setDatos({ ...datos, fechaRetiro: e.target.value })
+                setNuevaExperiencia({ ...nuevaExperiencia, fechaRetiro: e.target.value })
               }
             />
           </div>
@@ -91,11 +118,11 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
           <div className="campo">
             <label>Funciones realizadas</label>
             <textarea
-              rows="5"
+              rows="4"
               placeholder="Describa las funciones desempeñadas"
-              value={datos.funciones}
+              value={nuevaExperiencia.funciones}
               onChange={(e) =>
-                setDatos({ ...datos, funciones: e.target.value })
+                setNuevaExperiencia({ ...nuevaExperiencia, funciones: e.target.value })
               }
             ></textarea>
           </div>
@@ -105,9 +132,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
             <input
               type="text"
               placeholder="Nombre y teléfono"
-              value={datos.referenciaLaboral}
+              value={nuevaExperiencia.referenciaLaboral}
               onChange={(e) =>
-                setDatos({ ...datos, referenciaLaboral: e.target.value })
+                setNuevaExperiencia({ ...nuevaExperiencia, referenciaLaboral: e.target.value })
               }
             />
           </div>
@@ -117,18 +144,57 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
             <input
               type="file"
               onChange={(e) =>
-                setDatos({ ...datos, certificadoLaboral: e.target.files[0] })
+                setNuevaExperiencia({
+                  ...nuevaExperiencia,
+                  certificadoLaboral: e.target.files[0],
+                })
               }
             />
           </div>
 
           <div className="botones">
-            <button type="button" onClick={onVolver}>
-              Volver
+            <button type="submit" onClick={agregarExperiencia}>
+              Agregar Experiencia
             </button>
-
-            <button type="submit">Continuar</button>
           </div>
+
+        {datos.experiencias.length === 0 ? (
+          <p className="texto-ayuda">No has agregado experiencias aún.</p>
+        ) : (
+          <div className="lista-experiencias">
+            {datos.experiencias.map((exp, indice) => (
+              <div key={indice} className="experiencia-card">
+                <h4>{exp.empresa} — {exp.cargo}</h4>
+                <p><strong>Área:</strong> {exp.area}</p>
+                <p><strong>Periodo:</strong> {exp.fechaIngreso} a {exp.fechaRetiro}</p>
+                <p><strong>Funciones:</strong> {exp.funciones}</p>
+                <p><strong>Referencia:</strong> {exp.referenciaLaboral}</p>
+                {exp.certificadoLaboral && (
+                  <p className="texto-ayuda">
+                    Archivo adjunto: {exp.certificadoLaboral.name}
+                  </p>
+                )}
+                <button
+                  type="button"
+                  onClick={() => eliminarExperiencia(indice)}
+                  className="boton-eliminar"
+                >
+                  Eliminar
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <div className="botones">
+          <button type="button" onClick={onVolver}>
+            Volver
+          </button>
+
+          <button type="submit" onClick={continuar}>
+            Ver resumen
+          </button>
+        </div>
         </form>
       </section>
     </main>

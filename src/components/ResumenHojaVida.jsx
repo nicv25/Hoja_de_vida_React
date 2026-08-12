@@ -1,96 +1,164 @@
-function ResumenHojaVida({ datos, onVolver, onFinalizar }) {
-  const confirmar = (e) => {
-    e.preventDefault();
-    onFinalizar();
+function ResumenHojaVida({ datos, onVolver }) {
+  const finalizar = () => {
+    alert("Hoja de vida registrada correctamente.");
+    console.log("Datos completos de la hoja de vida:", datos);
+    
+    // Aquí enviarías los datos a tu API Flask
+    // fetch("/api/hoja-vida", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(datos),
+    // });
   };
-
-  // Convierte el archivo de la foto en una URL temporal para poder mostrarla
-  const urlFoto = datos.foto ? URL.createObjectURL(datos.foto) : null;
 
   return (
     <main className="contenedor-principal">
       <section className="formulario-card">
         <div className="formulario-encabezado">
           <span className="formulario-indicador">Paso 4 de 4</span>
-          <h2 className="formulario-titulo">Resumen de tu Hoja de Vida</h2>
+          <h2 className="formulario-titulo">Vista Previa</h2>
           <p className="formulario-descripcion">
-            Verifica que toda la información esté correcta antes de finalizar.
+            Revisa que toda la información sea correcta antes de finalizar.
           </p>
         </div>
 
-        <form className="formulario" onSubmit={confirmar}>
-          <div className="resumen-bloque">
-            <h3 className="resumen-titulo">Información Personal</h3>
-
-            <div className="resumen-foto">
-              {urlFoto ? (
-                <img
-                  src={urlFoto}
-                  alt="Fotografía del aprendiz"
-                  className="foto-preview"
-                />
-              ) : (
-                <p className="texto-ayuda">No se adjuntó fotografía.</p>
-              )}
+        <div className="formulario">
+          {/* Información Personal */}
+          <div className="seccion-resumen">
+            <h3 className="seccion-titulo-resumen">Información Personal</h3>
+            
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Nombres:</span>
+              <span className="valor-resumen">{datos.nombres || "—"}</span>
             </div>
 
-            <p><strong>Nombres:</strong> {datos.nombres}</p>
-            <p><strong>Apellidos:</strong> {datos.apellidos}</p>
-            <p><strong>Correo:</strong> {datos.correo}</p>
-            <p><strong>Dirección:</strong> {datos.direccion}</p>
-            <p><strong>Perfil profesional:</strong> {datos.perfilProfesional}</p>
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Apellidos:</span>
+              <span className="valor-resumen">{datos.apellidos || "—"}</span>
+            </div>
+
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Correo electrónico:</span>
+              <span className="valor-resumen">{datos.correo || "—"}</span>
+            </div>
+
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Dirección:</span>
+              <span className="valor-resumen">{datos.direccion || "—"}</span>
+            </div>
+
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Perfil Profesional:</span>
+              <span className="valor-resumen">{datos.perfilProfesional || "—"}</span>
+            </div>
           </div>
 
-          <div className="linea-separadora"></div>
+          {/* Información Académica */}
+          <div className="seccion-resumen">
+            <h3 className="seccion-titulo-resumen">Información Académica</h3>
+            
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Nivel de formación:</span>
+              <span className="valor-resumen">{datos.nivelFormacion || "—"}</span>
+            </div>
 
-          <div className="resumen-bloque">
-            <h3 className="resumen-titulo">Información Académica</h3>
-            <p><strong>Nivel de formación:</strong> {datos.nivelFormacion}</p>
-            <p><strong>Institución:</strong> {datos.institucion}</p>
-            <p><strong>Título obtenido:</strong> {datos.tituloObtenido}</p>
-            <p><strong>Fecha de inicio:</strong> {datos.fechaInicioAcademico}</p>
-            <p><strong>Fecha de finalización:</strong> {datos.fechaFinAcademico}</p>
-            <p><strong>Promedio:</strong> {datos.promedio}</p>
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Institución:</span>
+              <span className="valor-resumen">{datos.institucion || "—"}</span>
+            </div>
 
-            <p><strong>Cursos realizados:</strong></p>
-            {datos.cursos.length === 0 ? (
-              <p className="texto-ayuda">No se registraron cursos.</p>
-            ) : (
-              <ul className="lista-cursos-resumen">
-                {datos.cursos.map((curso, indice) => (
-                  <li key={indice}>{curso}</li>
-                ))}
-              </ul>
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Título obtenido:</span>
+              <span className="valor-resumen">{datos.tituloObtenido || "—"}</span>
+            </div>
+
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Fecha de inicio:</span>
+              <span className="valor-resumen">{datos.fechaInicioAcademico || "—"}</span>
+            </div>
+
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Fecha de finalización:</span>
+              <span className="valor-resumen">{datos.fechaFinAcademico || "—"}</span>
+            </div>
+
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Promedio académico:</span>
+              <span className="valor-resumen">{datos.promedio || "—"}</span>
+            </div>
+
+            <div className="fila-resumen">
+              <span className="etiqueta-resumen">Cursos realizados:</span>
+
+            {datos.cursos && datos.cursos.length > 0 && (
+              <div className="fila-resumen">
+                <ul className="lista-cursos-resumen">
+                  {datos.cursos.map((curso, indice) => (
+                    <span className="valor-resumen"><li key={indice}>{curso}</li></span>
+                  ))}
+                </ul>
+              </div>
             )}
+            </div>
           </div>
 
-          <div className="linea-separadora"></div>
+          {/* Experiencia Laboral */}
+          {datos.experiencias && datos.experiencias.length > 0 && (
+            <div className="seccion-resumen">
+              <h3 className="seccion-titulo-resumen">Experiencia Laboral</h3>
+              
+              {datos.experiencias.map((exp, indice) => (
+                <div key={indice} className="card-experiencia-resumen">
+                  <div className="fila-resumen">
+                    <span className="etiqueta-resumen">Empresa:</span>
+                    <span className="valor-resumen">{exp.empresa || "—"}</span>
+                  </div>
 
-          <div className="resumen-bloque">
-            <h3 className="resumen-titulo">Experiencia Laboral</h3>
-            <p><strong>Empresa:</strong> {datos.empresa}</p>
-            <p><strong>Cargo:</strong> {datos.cargo}</p>
-            <p><strong>Área:</strong> {datos.area}</p>
-            <p><strong>Fecha de ingreso:</strong> {datos.fechaIngreso}</p>
-            <p><strong>Fecha de retiro:</strong> {datos.fechaRetiro}</p>
-            <p><strong>Funciones:</strong> {datos.funciones}</p>
-            <p><strong>Referencia laboral:</strong> {datos.referenciaLaboral}</p>
-            <p>
-              <strong>Certificado laboral:</strong>{" "}
-              {datos.certificadoLaboral
-                ? datos.certificadoLaboral.name
-                : "No adjuntado"}
-            </p>
-          </div>
+                  <div className="fila-resumen">
+                    <span className="etiqueta-resumen">Cargo:</span>
+                    <span className="valor-resumen">{exp.cargo || "—"}</span>
+                  </div>
 
+                  <div className="fila-resumen">
+                    <span className="etiqueta-resumen">Área:</span>
+                    <span className="valor-resumen">{exp.area || "—"}</span>
+                  </div>
+
+                  <div className="fila-resumen">
+                    <span className="etiqueta-resumen">Fecha de ingreso:</span>
+                    <span className="valor-resumen">{exp.fechaIngreso || "—"}</span>
+                  </div>
+
+                  <div className="fila-resumen">
+                    <span className="etiqueta-resumen">Fecha de retiro:</span>
+                    <span className="valor-resumen">{exp.fechaRetiro || "—"}</span>
+                  </div>
+
+                  <div className="fila-resumen">
+                    <span className="etiqueta-resumen">Funciones:</span>
+                    <span className="valor-resumen">{exp.funciones || "—"}</span>
+                  </div>
+
+                  <div className="fila-resumen">
+                    <span className="etiqueta-resumen">Referencia:</span>
+                    <span className="valor-resumen">{exp.referenciaLaboral || "—"}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Botones de acción */}
           <div className="botones">
             <button type="button" onClick={onVolver}>
-              Volver
+              Volver y editar
             </button>
 
-            <button type="submit">Finalizar registro</button>
+            <button type="button" onClick={finalizar}>
+              Finalizar registro
+            </button>
           </div>
-        </form>
+        </div>
       </section>
     </main>
   );

@@ -1,19 +1,6 @@
 function FormularioPersonal({ datos, setDatos, onSiguiente }) {
   const continuar = (e) => {
     e.preventDefault();
-
-    if (
-      !datos.foto ||
-      !datos.nombres ||
-      !datos.apellidos ||
-      !datos.correo ||
-      !datos.direccion ||
-      !datos.perfilProfesional
-    ) {
-      alert("Por favor, completa todos los campos obligatorios.");
-      return;
-    }
-
     onSiguiente();
   };
 

@@ -5,17 +5,14 @@ import Header from "./components/Header";
 import FormularioPersonal from "./components/FormularioPersonal";
 import FormularioAcademico from "./components/FormularioAcademico";
 import FormularioExperiencia from "./components/FormularioExperiencia";
-import ResumenHojaVida from "./components/ResumenHojaVida";
+import Resumen_hojadevida from "./components/ResumenHojaVida";
 import Footer from "./components/Footer";
 
 function App() {
-  // Controla qué paso se muestra actualmente
   const [pasoActual, setPasoActual] = useState("personal");
 
-  // Objeto central con todos los datos de la hoja de vida
   const [datosHojaVida, setDatosHojaVida] = useState({
     // Información personal
-    foto: null,
     nombres: "",
     apellidos: "",
     correo: "",
@@ -32,14 +29,7 @@ function App() {
     cursos: [],
 
     // Experiencia laboral
-    empresa: "",
-    cargo: "",
-    area: "",
-    fechaIngreso: "",
-    fechaRetiro: "",
-    funciones: "",
-    referenciaLaboral: "",
-    certificadoLaboral: null,
+    experiencias: [],
   });
 
   return (
@@ -73,15 +63,10 @@ function App() {
       )}
 
       {pasoActual === "resumen" && (
-        <ResumenHojaVida
-          datos={datosHojaVida}
-          onVolver={() => setPasoActual("experiencia")}
-          onFinalizar={() => {
-            alert("Hoja de vida registrada correctamente.");
-            console.log(datosHojaVida);
-            // Aquí luego irá el fetch/axios.post hacia tu API Flask
-          }}
-        />
+        <Resumen_hojadevida
+        datos={datosHojaVida}
+        onVolver={() => setPasoActual("experiencia")}
+      />
       )}
 
       <Footer />

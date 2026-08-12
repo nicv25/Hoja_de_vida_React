@@ -1,43 +1,26 @@
 import { useState } from "react";
 
 function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
-  // Estado temporal para escribir un nuevo curso
   const [nuevoCurso, setNuevoCurso] = useState("");
 
-  const continuar = (e) => {
+  const agregarCurso = (e) => {
     e.preventDefault();
 
-    if (
-      !datos.nivelFormacion ||
-      !datos.institucion ||
-      !datos.tituloObtenido ||
-      !datos.fechaInicioAcademico ||
-      !datos.fechaFinAcademico ||
-      !datos.promedio
-    ) {
-      alert("Por favor, completa todos los campos obligatorios.");
-      return;
-    }
+    const cursoLimpio = nuevoCurso.trim();
 
-    onSiguiente();
-  };
-
-  // Agrega el curso escrito al arreglo de cursos
-  const agregarCurso = () => {
-    if (nuevoCurso.trim() === "") {
-      alert("Escribe el nombre del curso antes de agregarlo.");
+    if (!cursoLimpio) {
+      alert("Escribe el nombre de un curso antes de agregarlo.");
       return;
     }
 
     setDatos({
       ...datos,
-      cursos: [...datos.cursos, nuevoCurso],
+      cursos: [...datos.cursos, cursoLimpio],
     });
 
     setNuevoCurso("");
   };
 
-  // Elimina un curso según su posición en el arreglo
   const eliminarCurso = (indice) => {
     setDatos({
       ...datos,
@@ -45,11 +28,18 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
     });
   };
 
+  const continuar = (e) => {
+    e.preventDefault();
+
+
+    onSiguiente();
+  };
+
   return (
     <main className="contenedor-principal">
       <section className="formulario-card">
         <div className="formulario-encabezado">
-          <span className="formulario-indicador">Paso 2 de 4</span>
+          <span className="formulario-indicador">Paso 2 de 3</span>
           <h2 className="formulario-titulo">Información Académica</h2>
           <p className="formulario-descripcion">
             Cuéntanos sobre tu formación académica más reciente.
@@ -135,26 +125,23 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
             />
           </div>
 
-          <div className="linea-separadora"></div>
-
           <div className="campo">
             <label>Cursos Realizados</label>
 
-            <div className="agregar-curso">
+            <form onSubmit={agregarCurso} className="campo-cursos">
               <input
                 type="text"
-                placeholder="Ejemplo: HTML y CSS"
+                placeholder="Ejemplo: Desarrollo Web con React"
                 value={nuevoCurso}
                 onChange={(e) => setNuevoCurso(e.target.value)}
               />
-
-              <button type="button" onClick={agregarCurso}>
-                + Agregar
+              <button onClick={agregarCurso} className="boton-agregar">
+                Agregar
               </button>
-            </div>
+            </form>
 
             {datos.cursos.length === 0 ? (
-              <p className="texto-ayuda">Aún no has agregado ningún curso.</p>
+              <p className="texto-ayuda">No has agregado cursos aún.</p>
             ) : (
               <ul className="lista-cursos">
                 {datos.cursos.map((curso, indice) => (
@@ -162,8 +149,8 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
                     <span>{curso}</span>
                     <button
                       type="button"
-                      className="boton-eliminar"
                       onClick={() => eliminarCurso(indice)}
+                      className="boton-eliminar"
                     >
                       Eliminar
                     </button>
@@ -178,7 +165,7 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
               Volver
             </button>
 
-            <button type="submit">Continuar</button>
+            <button type="submit" onClick={continuar}>Continuar</button>
           </div>
         </form>
       </section>
