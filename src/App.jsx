@@ -13,13 +13,13 @@ function App() {
 
   const [datosHojaVida, setDatosHojaVida] = useState({
     // Información personal
+    foto: null,
     nombres: "",
     apellidos: "",
     correo: "",
     direccion: "",
     perfilProfesional: "",
 
-    // Información académica
     nivelFormacion: "",
     institucion: "",
     tituloObtenido: "",
@@ -27,8 +27,8 @@ function App() {
     fechaFinAcademico: "",
     promedio: "",
     cursos: [],
+    formacionesAcademicas: [],   
 
-    // Experiencia laboral
     experiencias: [],
   });
 
@@ -64,9 +64,9 @@ function App() {
 
       {pasoActual === "resumen" && (
         <Resumen_hojadevida
-        datos={datosHojaVida}
-        onVolver={() => setPasoActual("experiencia")}
-      />
+          datos={datosHojaVida}
+          onVolver={() => setPasoActual("experiencia")}
+        />
       )}
 
       <Footer />

@@ -122,6 +122,8 @@ body {
   font-weight: 700;
 }
 
+/* Campos */
+
 .campo {
   display: flex;
   flex-direction: column;
@@ -168,6 +170,20 @@ body {
 }
 
 /* =========================
+   TEXTO AUXILIAR / ERRORES
+========================= */
+
+.texto-ayuda {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.texto-error {
+  color: #ef4444;
+  font-size: 0.8rem;
+}
+
+/* =========================
    BOTONES
 ========================= */
 
@@ -187,6 +203,25 @@ body {
   font-size: 0.95rem;
   font-weight: 700;
   transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+/* Botón primario (acciones principales como finalizar) */
+.boton-primario {
+  background-color: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 13px 22px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.boton-primario:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .botones button[type="submit"] {
@@ -303,7 +338,6 @@ body {
   line-height: 1.5;
 }
 
-
 /* =========================
    VISTA PREVIA / RESUMEN
 ========================= */
@@ -405,7 +439,7 @@ body {
 }
 
 /* =========================
-   RESPONSIVE
+   RESPONSIVE GENERAL
 ========================= */
 
 @media (max-width: 700px) {
@@ -423,7 +457,8 @@ body {
     flex-direction: column-reverse;
   }
 
-  .botones button {
+  .botones button,
+  .boton-primario {
     width: 100%;
   }
 
