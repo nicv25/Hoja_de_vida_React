@@ -1,8 +1,10 @@
 function ResumenHojaVida({ datos, onVolver }) {
   const finalizar = () => {
     alert("Hoja de vida registrada correctamente.");
+
     console.log("Datos completos de la hoja de vida:", datos);
-    // Aquí luego podrás enviar los datos al backend o generar un PDF
+
+    // Más adelante, aquí se realizará la solicitud POST hacia Flask.
   };
 
   const {
@@ -15,6 +17,7 @@ function ResumenHojaVida({ datos, onVolver }) {
     formacionesAcademicas,
     cursos,
     experiencias,
+    habilidades,
   } = datos;
 
   return (
@@ -22,19 +25,25 @@ function ResumenHojaVida({ datos, onVolver }) {
       <section className="formulario-card">
         <div className="formulario-encabezado">
           <span className="formulario-indicador">Paso 4 de 4</span>
-          <h2 className="formulario-titulo">Vista previa de hoja de vida</h2>
+
+          <h2 className="formulario-titulo">
+            Vista previa de hoja de vida
+          </h2>
+
           <p className="formulario-descripcion">
             Revisa que toda la información sea correcta antes de finalizar.
           </p>
         </div>
 
         <div className="formulario">
-          {/* Información Personal */}
           <div className="seccion-resumen">
-            <h3 className="seccion-titulo-resumen">Información Personal</h3>
+            <h3 className="seccion-titulo-resumen">
+              Información personal
+            </h3>
 
             <div className="fila-resumen">
               <span className="etiqueta-resumen">Fotografía:</span>
+
               <div className="valor-resumen">
                 {foto ? (
                   <img
@@ -56,6 +65,7 @@ function ResumenHojaVida({ datos, onVolver }) {
 
             <div className="fila-resumen">
               <span className="etiqueta-resumen">Nombre completo:</span>
+
               <span className="valor-resumen">
                 {nombres || apellidos
                   ? `${nombres} ${apellidos}`.trim()
@@ -64,32 +74,48 @@ function ResumenHojaVida({ datos, onVolver }) {
             </div>
 
             <div className="fila-resumen">
-              <span className="etiqueta-resumen">Correo electrónico:</span>
-              <span className="valor-resumen">{correo || "Sin registrar"}</span>
+              <span className="etiqueta-resumen">
+                Correo electrónico:
+              </span>
+
+              <span className="valor-resumen">
+                {correo || "Sin registrar"}
+              </span>
             </div>
 
             <div className="fila-resumen">
               <span className="etiqueta-resumen">Dirección:</span>
-              <span className="valor-resumen">{direccion || "Sin registrar"}</span>
+
+              <span className="valor-resumen">
+                {direccion || "Sin registrar"}
+              </span>
             </div>
 
             <div className="fila-resumen">
-              <span className="etiqueta-resumen">Perfil profesional:</span>
+              <span className="etiqueta-resumen">
+                Perfil profesional:
+              </span>
+
               <span className="valor-resumen">
                 {perfilProfesional || "Sin registrar"}
               </span>
             </div>
           </div>
 
-          {/* Información Académica */}
           <div className="seccion-resumen">
-            <h3 className="seccion-titulo-resumen">Formación Académica</h3>
+            <h3 className="seccion-titulo-resumen">
+              Formación académica
+            </h3>
 
-            {formacionesAcademicas && formacionesAcademicas.length > 0 ? (
+            {formacionesAcademicas &&
+            formacionesAcademicas.length > 0 ? (
               formacionesAcademicas.map((formacion, indice) => (
                 <div key={indice} className="card-experiencia-resumen">
                   <div className="fila-resumen">
-                    <span className="etiqueta-resumen">Nivel de formación:</span>
+                    <span className="etiqueta-resumen">
+                      Nivel de formación:
+                    </span>
+
                     <span className="valor-resumen">
                       {formacion.nivelFormacion || "Sin especificar"}
                     </span>
@@ -97,13 +123,17 @@ function ResumenHojaVida({ datos, onVolver }) {
 
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Institución:</span>
+
                     <span className="valor-resumen">
                       {formacion.institucion || "Sin especificar"}
                     </span>
                   </div>
 
                   <div className="fila-resumen">
-                    <span className="etiqueta-resumen">Título obtenido:</span>
+                    <span className="etiqueta-resumen">
+                      Título obtenido:
+                    </span>
+
                     <span className="valor-resumen">
                       {formacion.tituloObtenido || "Sin especificar"}
                     </span>
@@ -111,15 +141,18 @@ function ResumenHojaVida({ datos, onVolver }) {
 
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Periodo:</span>
+
                     <span className="valor-resumen">
-                      {(formacion.fechaInicioAcademico || "¿Inicio?") +
-                        " - " +
-                        (formacion.fechaFinAcademico || "¿Fin?")}
+                      {formacion.fechaInicioAcademico || "¿Inicio?"} -{" "}
+                      {formacion.fechaFinAcademico || "¿Fin?"}
                     </span>
                   </div>
 
                   <div className="fila-resumen">
-                    <span className="etiqueta-resumen">Promedio académico:</span>
+                    <span className="etiqueta-resumen">
+                      Promedio académico:
+                    </span>
+
                     <span className="valor-resumen">
                       {formacion.promedio || "Sin registrar"}
                     </span>
@@ -133,7 +166,10 @@ function ResumenHojaVida({ datos, onVolver }) {
             )}
 
             <div className="fila-resumen">
-              <span className="etiqueta-resumen">Cursos realizados:</span>
+              <span className="etiqueta-resumen">
+                Cursos realizados:
+              </span>
+
               <div className="valor-resumen">
                 {cursos && cursos.length > 0 ? (
                   <ul className="lista-cursos-resumen">
@@ -150,54 +186,71 @@ function ResumenHojaVida({ datos, onVolver }) {
             </div>
           </div>
 
-          {/* Experiencia Laboral */}
           <div className="seccion-resumen">
-            <h3 className="seccion-titulo-resumen">Experiencia Laboral</h3>
+            <h3 className="seccion-titulo-resumen">
+              Experiencia laboral
+            </h3>
 
             {experiencias && experiencias.length > 0 ? (
-              experiencias.map((exp, indice) => (
+              experiencias.map((experiencia, indice) => (
                 <div key={indice} className="card-experiencia-resumen">
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Empresa:</span>
-                    <span className="valor-resumen">{exp.empresa || "—"}</span>
+
+                    <span className="valor-resumen">
+                      {experiencia.empresa || "Sin registrar"}
+                    </span>
                   </div>
 
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Cargo:</span>
-                    <span className="valor-resumen">{exp.cargo || "—"}</span>
+
+                    <span className="valor-resumen">
+                      {experiencia.cargo || "Sin registrar"}
+                    </span>
                   </div>
 
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Área:</span>
-                    <span className="valor-resumen">{exp.area || "—"}</span>
+
+                    <span className="valor-resumen">
+                      {experiencia.area || "Sin registrar"}
+                    </span>
                   </div>
 
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Periodo:</span>
+
                     <span className="valor-resumen">
-                      {(exp.fechaIngreso || "¿Ingreso?") +
-                        " - " +
-                        (exp.fechaRetiro || "¿Retiro?")}
+                      {experiencia.fechaIngreso || "¿Ingreso?"} -{" "}
+                      {experiencia.fechaRetiro || "¿Retiro?"}
                     </span>
                   </div>
 
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Funciones:</span>
-                    <span className="valor-resumen">{exp.funciones || "—"}</span>
+
+                    <span className="valor-resumen">
+                      {experiencia.funciones || "Sin registrar"}
+                    </span>
                   </div>
 
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Referencia:</span>
+
                     <span className="valor-resumen">
-                      {exp.referenciaLaboral || "—"}
+                      {experiencia.referenciaLaboral || "Sin registrar"}
                     </span>
                   </div>
 
-                  {exp.certificadoLaboral && (
+                  {experiencia.certificadoLaboral && (
                     <div className="fila-resumen">
-                      <span className="etiqueta-resumen">Certificado:</span>
+                      <span className="etiqueta-resumen">
+                        Certificado laboral:
+                      </span>
+
                       <span className="valor-resumen">
-                        {exp.certificadoLaboral.name}
+                        {experiencia.certificadoLaboral.name}
                       </span>
                     </div>
                   )}
@@ -210,13 +263,32 @@ function ResumenHojaVida({ datos, onVolver }) {
             )}
           </div>
 
-          {/* Botones de acción */}
+          <div className="seccion-resumen">
+            <h3 className="seccion-titulo-resumen">Habilidades</h3>
+
+            {habilidades && habilidades.length > 0 ? (
+              <ul className="lista-cursos-resumen">
+                {habilidades.map((habilidad, indice) => (
+                  <li key={indice}>{habilidad}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="texto-ayuda">
+                No registraste habilidades.
+              </p>
+            )}
+          </div>
+
           <div className="botones">
             <button type="button" onClick={onVolver}>
               Volver y editar
             </button>
 
-            <button type="button" onClick={finalizar} className="boton-primario">
+            <button
+              type="button"
+              onClick={finalizar}
+              className="boton-primario"
+            >
               Finalizar registro
             </button>
           </div>

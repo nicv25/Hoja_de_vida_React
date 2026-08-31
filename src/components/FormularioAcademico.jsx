@@ -272,6 +272,11 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
               <button
                 type="button"
                 onClick={agregarCurso}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    agregarCurso(e);
+                  }
+                }}  
                 className="boton-agregar"
               >
                 Agregar
@@ -349,7 +354,7 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
               Agregar formación
             </button>
 
-            <button type="submit">
+            <button onClick={continuar}>
               Continuar
             </button>
           </div>

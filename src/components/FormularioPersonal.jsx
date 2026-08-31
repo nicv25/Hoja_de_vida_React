@@ -1,54 +1,29 @@
-import { useState } from "react";
-
 function FormularioPersonal({ datos, setDatos, onSiguiente }) {
-  const [errores, setErrores] = useState({});
-
-  const validarCampos = () => {
-    const nuevosErrores = {};
-
-    // Nombres
-    if (!datos.nombres.trim()) {
-      nuevosErrores.nombres = "Los nombres son obligatorios.";
-    } else if (datos.nombres.trim().length < 2) {
-      nuevosErrores.nombres = "Los nombres deben tener al menos 2 caracteres.";
-    }
-
-    // Apellidos
-    if (!datos.apellidos.trim()) {
-      nuevosErrores.apellidos = "Los apellidos son obligatorios.";
-    } else if (datos.apellidos.trim().length < 2) {
-      nuevosErrores.apellidos = "Los apellidos deben tener al menos 2 caracteres.";
-    }
-
-    // Correo (validación simple)
-    if (!datos.correo.trim()) {
-      nuevosErrores.correo = "El correo es obligatorio.";
-    } else if (!/\S+@\S+\.\S+/.test(datos.correo)) {
-      nuevosErrores.correo = "Ingresa un correo electrónico válido.";
-    }
-
-    // Dirección
-    if (!datos.direccion.trim()) {
-      nuevosErrores.direccion = "La dirección es obligatoria.";
-    } else if (datos.direccion.trim().length < 5) {
-      nuevosErrores.direccion = "La dirección debe tener al menos 5 caracteres.";
-    }
-
-    // Perfil profesional
-    if (!datos.perfilProfesional.trim()) {
-      nuevosErrores.perfilProfesional = "El perfil profesional es obligatorio.";
-    } else if (datos.perfilProfesional.trim().length < 2) {
-      nuevosErrores.perfilProfesional = "Escribe al menos 30 caracteres en el perfil profesional.";
-    }
-
-    setErrores(nuevosErrores);
-    return Object.keys(nuevosErrores).length === 0;
-  };
-
   const continuar = (e) => {
     e.preventDefault();
-    if (!validarCampos()) return; // si hay errores, no avanzamos
-    onSiguiente();
+
+    switch (true) {
+      case !datos.nombres:
+        alert("Por favor, ingrese sus nombres.");
+        return;
+      case !datos.apellidos:
+        alert("Por favor, ingrese sus apellidos.");
+        return;
+      case !datos.correo:
+        alert("Por favor, ingrese su correo electrónico.");
+        return;
+      case !datos.direccion:
+        alert("Por favor, ingrese su dirección.");
+        return;
+      case !datos.perfilProfesional:
+        alert("Por favor, escriba una breve descripción de su perfil profesional.");
+        return;
+      case !datos.correo.includes("@"):
+        alert("Por favor, ingrese un correo electrónico válido.");
+        return;
+      default:
+        onSiguiente();
+    }
   };
 
   return (
@@ -69,7 +44,7 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
               type="file"
               accept="image/*"
               onChange={(e) =>
-                setDatos({ ...datos, foto: e.target.files[0] || null })
+                setDatos({ ...datos, foto: e.target.files[0] })
               }
             />
             <small className="texto-ayuda">
@@ -87,9 +62,6 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
                 setDatos({ ...datos, nombres: e.target.value })
               }
             />
-            {errores.nombres && (
-              <small className="texto-error">{errores.nombres}</small>
-            )}
           </div>
 
           <div className="campo">
@@ -102,9 +74,6 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
                 setDatos({ ...datos, apellidos: e.target.value })
               }
             />
-            {errores.apellidos && (
-              <small className="texto-error">{errores.apellidos}</small>
-            )}
           </div>
 
           <div className="campo">
@@ -117,9 +86,6 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
                 setDatos({ ...datos, correo: e.target.value })
               }
             />
-            {errores.correo && (
-              <small className="texto-error">{errores.correo}</small>
-            )}
           </div>
 
           <div className="campo">
@@ -132,9 +98,6 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
                 setDatos({ ...datos, direccion: e.target.value })
               }
             />
-            {errores.direccion && (
-              <small className="texto-error">{errores.direccion}</small>
-            )}
           </div>
 
           <div className="campo">
@@ -147,9 +110,6 @@ function FormularioPersonal({ datos, setDatos, onSiguiente }) {
                 setDatos({ ...datos, perfilProfesional: e.target.value })
               }
             ></textarea>
-            {errores.perfilProfesional && (
-              <small className="texto-error">{errores.perfilProfesional}</small>
-            )}
           </div>
 
           <div className="botones">

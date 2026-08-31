@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import FormularioPersonal from "./components/FormularioPersonal";
 import FormularioAcademico from "./components/FormularioAcademico";
 import FormularioExperiencia from "./components/FormularioExperiencia";
-import Resumen_hojadevida from "./components/ResumenHojaVida";
+import ResumenHojaVida from "./components/ResumenHojaVida";
 import Footer from "./components/Footer";
 
 function App() {
@@ -20,6 +20,7 @@ function App() {
     direccion: "",
     perfilProfesional: "",
 
+    // Información académica
     nivelFormacion: "",
     institucion: "",
     tituloObtenido: "",
@@ -27,9 +28,13 @@ function App() {
     fechaFinAcademico: "",
     promedio: "",
     cursos: [],
-    formacionesAcademicas: [],   
+    formacionesAcademicas: [],
 
+    // Información laboral
     experiencias: [],
+
+    // Nueva lista independiente de habilidades
+    habilidades: [],
   });
 
   return (
@@ -63,7 +68,7 @@ function App() {
       )}
 
       {pasoActual === "resumen" && (
-        <Resumen_hojadevida
+        <ResumenHojaVida
           datos={datosHojaVida}
           onVolver={() => setPasoActual("experiencia")}
         />
