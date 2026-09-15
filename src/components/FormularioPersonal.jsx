@@ -1,30 +1,32 @@
-function FormularioPersonal({ datos, setDatos, onSiguiente }) {
-  const continuar = (e) => {
-    e.preventDefault();
+function FormularioPersonal({ datos, setDatos, onSiguiente, guardarhv }) {
+const continuar = async (e) => {
+  e.preventDefault();
 
-    switch (true) {
-      case !datos.nombres:
-        alert("Por favor, ingrese sus nombres.");
-        return;
-      case !datos.apellidos:
-        alert("Por favor, ingrese sus apellidos.");
-        return;
-      case !datos.correo:
-        alert("Por favor, ingrese su correo electrónico.");
-        return;
-      case !datos.direccion:
-        alert("Por favor, ingrese su dirección.");
-        return;
-      case !datos.perfilProfesional:
-        alert("Por favor, escriba una breve descripción de su perfil profesional.");
-        return;
-      case !datos.correo.includes("@"):
-        alert("Por favor, ingrese un correo electrónico válido.");
-        return;
-      default:
-        onSiguiente();
+  switch (true) {
+    case !datos.nombres:
+      alert("Por favor, ingrese sus nombres.");
+      return;
+    case !datos.apellidos:
+      alert("Por favor, ingrese sus apellidos.");
+      return;
+    case !datos.correo:
+      alert("Por favor, ingrese su correo electrónico.");
+      return;
+    case !datos.correo.includes("@"):
+      alert("Por favor, ingrese un correo electrónico válido.");
+      return;
+    case !datos.direccion:
+      alert("Por favor, ingrese su dirección.");
+      return;
+    case !datos.perfilProfesional:
+      alert("Por favor, escriba una breve descripción de su perfil profesional.");
+      return;
+    default: {
+      const guardado = await guardarhv();
+      if (guardado) onSiguiente();   // solo avanza si la API guardó bien
     }
-  };
+  }
+};
 
   return (
     <main className="contenedor-principal">
