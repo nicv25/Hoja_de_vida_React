@@ -470,3 +470,32 @@ body {
     width: 100%;
   }
 }
+
+/* =========================
+HABILIDADES POR EXPERIENCIA
+========================= */
+
+.habilidades-experiencia {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #e4e9f0;
+}
+
+.habilidades-experiencia > p {
+  margin: 0 0 8px;
+}
+
+/* Versión compacta de los ítems dentro de la tarjeta de experiencia */
+.habilidades-experiencia .item-curso {
+  padding: 8px 12px;
+}
+
+.habilidades-experiencia .boton-eliminar {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+/* Separación del botón "Eliminar experiencia" respecto a las habilidades */
+.experiencia-card > .boton-eliminar {
+  margin-top: 12px;
+}

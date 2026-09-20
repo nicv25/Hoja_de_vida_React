@@ -1,11 +1,11 @@
 import { useState } from "react";
 
 function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
-  // Listas seguras: si aún no existen en "datos", se usan arreglos vacíos.
+  // Lista segura: si aún no existe en "datos", se usa un arreglo vacío.
   const experiencias = datos.experiencias || [];
-  const habilidades = datos.habilidades || [];
 
   // Estado temporal para escribir una nueva experiencia.
+  // IMPORTANTE: cada experiencia nace con su propia lista de habilidades.
   const [nuevaExperiencia, setNuevaExperiencia] = useState({
     empresa: "",
     cargo: "",
@@ -15,10 +15,48 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
     funciones: "",
     referenciaLaboral: "",
     certificadoLaboral: null,
+    habilidades: [],
   });
 
-  // Estado temporal para escribir una nueva habilidad.
+  // Estado temporal para escribir la habilidad de la experiencia que se está creando.
   const [nuevaHabilidad, setNuevaHabilidad] = useState("");
+
+  // Agrega la habilidad a la experiencia NUEVA (la que se está diligenciando).
+  const agregarHabilidad = () => {
+    const habilidadLimpia = nuevaHabilidad.trim();
+
+    if (!habilidadLimpia) {
+      alert("Escribe una habilidad antes de agregarla.");
+      return;
+    }
+
+    const habilidadRepetida = nuevaExperiencia.habilidades.some(
+      (habilidad) =>
+        habilidad.toLowerCase() === habilidadLimpia.toLowerCase()
+    );
+
+    if (habilidadRepetida) {
+      alert("Esta habilidad ya fue agregada a esta experiencia.");
+      return;
+    }
+
+    setNuevaExperiencia({
+      ...nuevaExperiencia,
+      habilidades: [...nuevaExperiencia.habilidades, habilidadLimpia],
+    });
+
+    setNuevaHabilidad("");
+  };
+
+  // Quita una habilidad de la experiencia NUEVA (antes de guardarla).
+  const quitarHabilidadNuevaExperiencia = (indiceHabilidad) => {
+    setNuevaExperiencia({
+      ...nuevaExperiencia,
+      habilidades: nuevaExperiencia.habilidades.filter(
+        (_, indice) => indice !== indiceHabilidad
+      ),
+    });
+  };
 
   const agregarExperiencia = () => {
     const experienciaCompleta =
@@ -49,7 +87,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
       funciones: "",
       referenciaLaboral: "",
       certificadoLaboral: null,
+      habilidades: [],
     });
+    setNuevaHabilidad("");
   };
 
   const eliminarExperiencia = (indice) => {
@@ -59,41 +99,44 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
     });
   };
 
-  const agregarHabilidad = () => {
-    const habilidadLimpia = nuevaHabilidad.trim();
-
-    if (!habilidadLimpia) {
-      alert("Escribe una habilidad antes de agregarla.");
-      return;
-    }
-
-    const habilidadRepetida = habilidades.some(
-      (habilidad) =>
-        habilidad.toLowerCase() === habilidadLimpia.toLowerCase()
-    );
-
-    if (habilidadRepetida) {
-      alert("Esta habilidad ya fue agregada.");
-      return;
-    }
-
+  // Quita una habilidad de una experiencia YA guardada en la lista.
+  const eliminarHabilidadDeExperiencia = (indiceExperiencia, indiceHabilidad) => {
     setDatos({
       ...datos,
-      habilidades: [...habilidades, habilidadLimpia],
-    });
+      experiencias: experiencias.map((experiencia, indice) => {
+        if (indice !== indiceExperiencia) return experiencia;
 
-    setNuevaHabilidad("");
-  };
-
-  const eliminarHabilidad = (indice) => {
-    setDatos({
-      ...datos,
-      habilidades: habilidades.filter((_, i) => i !== indice),
+        return {
+          ...experiencia,
+          habilidades: experiencia.habilidades.filter(
+            (_, i) => i !== indiceHabilidad
+          ),
+        };
+      }),
     });
   };
 
   const continuar = (e) => {
     e.preventDefault();
+
+    // Advertencia cuando el usuario dejó algo escrito sin agregar.
+    const hayTextoSinAgregar =
+      nuevaHabilidad.trim().length > 0 ||
+      nuevaExperiencia.empresa.trim() ||
+      nuevaExperiencia.cargo.trim() ||
+      nuevaExperiencia.area.trim() ||
+      nuevaExperiencia.fechaIngreso ||
+      nuevaExperiencia.fechaRetiro ||
+      nuevaExperiencia.funciones.trim() ||
+      nuevaExperiencia.referenciaLaboral.trim();
+
+    if (hayTextoSinAgregar) {
+      const respuesta = window.confirm(
+        "Tienes una experiencia o habilidad sin agregar. ¿Deseas continuar de todos modos?"
+      );
+      if (!respuesta) return;
+    }
+
     onSiguiente();
   };
 
@@ -102,24 +145,18 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
       <section className="formulario-card">
         <div className="formulario-encabezado">
           <span className="formulario-indicador">Paso 3 de 4</span>
-
-          <h2 className="formulario-titulo">
-            Experiencia y habilidades
-          </h2>
-
+          <h2 className="formulario-titulo">Experiencia y habilidades</h2>
           <p className="formulario-descripcion">
-            Registra tu experiencia laboral y las habilidades que tienes.
+            Registra tu experiencia laboral y, dentro de cada experiencia, las
+            habilidades que aplicaste.
           </p>
         </div>
 
         <form className="formulario" onSubmit={continuar}>
-          <h3 className="subtitulo-formulario">
-            Nueva experiencia laboral
-          </h3>
+          <h3 className="subtitulo-formulario">Nueva experiencia laboral</h3>
 
           <div className="campo">
             <label>Empresa</label>
-
             <input
               type="text"
               placeholder="Nombre de la empresa"
@@ -135,7 +172,6 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
 
           <div className="campo">
             <label>Cargo desempeñado</label>
-
             <input
               type="text"
               placeholder="Ejemplo: Desarrollador Junior"
@@ -151,10 +187,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
 
           <div className="campo">
             <label>Área</label>
-
             <input
               type="text"
-              placeholder="Ejemplo: Desarrollo de software"
+              placeholder="Ejemplo: Gestión administrativa"
               value={nuevaExperiencia.area}
               onChange={(e) =>
                 setNuevaExperiencia({
@@ -167,7 +202,6 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
 
           <div className="campo">
             <label>Fecha de ingreso</label>
-
             <input
               type="date"
               value={nuevaExperiencia.fechaIngreso}
@@ -182,7 +216,6 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
 
           <div className="campo">
             <label>Fecha de retiro</label>
-
             <input
               type="date"
               value={nuevaExperiencia.fechaRetiro}
@@ -197,10 +230,8 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
 
           <div className="campo">
             <label>Funciones realizadas</label>
-
             <textarea
-              rows="4"
-              placeholder="Describe las funciones desempeñadas"
+              placeholder="Describe las principales funciones del cargo"
               value={nuevaExperiencia.funciones}
               onChange={(e) =>
                 setNuevaExperiencia({
@@ -213,10 +244,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
 
           <div className="campo">
             <label>Referencia laboral</label>
-
             <input
               type="text"
-              placeholder="Nombre y teléfono"
+              placeholder="Nombre y teléfono de la referencia"
               value={nuevaExperiencia.referenciaLaboral}
               onChange={(e) =>
                 setNuevaExperiencia({
@@ -229,9 +259,9 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
 
           <div className="campo">
             <label>Adjuntar certificado laboral</label>
-
             <input
               type="file"
+              accept="application/pdf,image/*"
               onChange={(e) =>
                 setNuevaExperiencia({
                   ...nuevaExperiencia,
@@ -239,21 +269,65 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
                 })
               }
             />
-
-            <small className="texto-ayuda">
+            <p className="texto-ayuda">
               Puedes adjuntar un certificado laboral si lo tienes.
-            </small>
+            </p>
           </div>
 
-          <div className="botones">
-            <button
-              type="button"
-              className="boton-agregar"
-              onClick={agregarExperiencia}
-            >
-              Agregar experiencia
-            </button>
+          {/* Las habilidades ahora pertenecen a esta experiencia específica */}
+          <div className="campo">
+            <label>Habilidades de esta experiencia</label>
+            <div className="campo-cursos">
+              <input
+                type="text"
+                placeholder="Ejemplo: Trabajo en equipo"
+                value={nuevaHabilidad}
+                onChange={(e) => setNuevaHabilidad(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    agregarHabilidad();
+                  }
+                }}
+              />
+              <button
+                type="button"
+                className="boton-agregar"
+                onClick={agregarHabilidad}
+              >
+                Agregar
+              </button>
+            </div>
+            <p className="texto-ayuda">
+              Estas habilidades quedarán asociadas únicamente a esta
+              experiencia.
+            </p>
+
+            {nuevaExperiencia.habilidades.length > 0 && (
+              <ul className="lista-cursos">
+                {nuevaExperiencia.habilidades.map((habilidad, indice) => (
+                  <li key={indice} className="item-curso">
+                    <span>{habilidad}</span>
+                    <button
+                      type="button"
+                      className="boton-eliminar"
+                      onClick={() => quitarHabilidadNuevaExperiencia(indice)}
+                    >
+                      Quitar
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
+
+          <button
+            type="button"
+            className="boton-agregar"
+            onClick={agregarExperiencia}
+          >
+            Agregar experiencia
+          </button>
 
           {experiencias.length === 0 ? (
             <p className="texto-ayuda">
@@ -266,32 +340,58 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
                   <h4>
                     {experiencia.empresa} — {experiencia.cargo}
                   </h4>
-
                   <p>
                     <strong>Área:</strong> {experiencia.area}
                   </p>
-
                   <p>
-                    <strong>Periodo:</strong>{" "}
-                    {experiencia.fechaIngreso} a{" "}
+                    <strong>Periodo:</strong> {experiencia.fechaIngreso} a{" "}
                     {experiencia.fechaRetiro}
                   </p>
-
                   <p>
                     <strong>Funciones:</strong> {experiencia.funciones}
                   </p>
-
                   <p>
-                    <strong>Referencia:</strong>{" "}
-                    {experiencia.referenciaLaboral}
+                    <strong>Referencia:</strong> {experiencia.referenciaLaboral}
                   </p>
-
                   {experiencia.certificadoLaboral && (
-                    <p className="texto-ayuda">
-                      Archivo adjunto:{" "}
+                    <p>
+                      <strong>Archivo adjunto:</strong>{" "}
                       {experiencia.certificadoLaboral.name}
                     </p>
                   )}
+
+                  <div className="habilidades-experiencia">
+                    <p>
+                      <strong>Habilidades asociadas:</strong>
+                    </p>
+                    {experiencia.habilidades.length === 0 ? (
+                      <p className="texto-ayuda">
+                        Esta experiencia no tiene habilidades registradas.
+                      </p>
+                    ) : (
+                      <ul className="lista-cursos">
+                        {experiencia.habilidades.map(
+                          (habilidad, indiceHabilidad) => (
+                            <li key={indiceHabilidad} className="item-curso">
+                              <span>{habilidad}</span>
+                              <button
+                                type="button"
+                                className="boton-eliminar"
+                                onClick={() =>
+                                  eliminarHabilidadDeExperiencia(
+                                    indice,
+                                    indiceHabilidad
+                                  )
+                                }
+                              >
+                                Quitar
+                              </button>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    )}
+                  </div>
 
                   <button
                     type="button"
@@ -305,65 +405,11 @@ function FormularioExperiencia({ datos, setDatos, onVolver, onSiguiente }) {
             </div>
           )}
 
-          <hr className="linea-separadora" />
-
-          <h3 className="subtitulo-formulario">Habilidades</h3>
-
-          <div className="campo">
-            <label>Agregar una habilidad</label>
-
-            <div className="campo-cursos">
-              <input
-                type="text"
-                placeholder="Ejemplo: React, MySQL o Trabajo en equipo"
-                value={nuevaHabilidad}
-                onChange={(e) => setNuevaHabilidad(e.target.value)}
-              />
-
-              <button
-                type="button"
-                className="boton-agregar"
-                onClick={agregarHabilidad}
-              >
-                Agregar habilidad
-              </button>
-            </div>
-
-            <small className="texto-ayuda">
-              Registra habilidades técnicas o habilidades personales.
-            </small>
-          </div>
-
-          {habilidades.length === 0 ? (
-            <p className="texto-ayuda">
-              No has agregado habilidades aún.
-            </p>
-          ) : (
-            <ul className="lista-cursos">
-              {habilidades.map((habilidad, indice) => (
-                <li key={indice} className="item-curso">
-                  <span>{habilidad}</span>
-
-                  <button
-                    type="button"
-                    className="boton-eliminar"
-                    onClick={() => eliminarHabilidad(indice)}
-                  >
-                    Eliminar
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-
           <div className="botones">
             <button type="button" onClick={onVolver}>
               Volver
             </button>
-
-            <button type="submit">
-              Ver resumen
-            </button>
+            <button type="submit">Ver resumen</button>
           </div>
         </form>
       </section>

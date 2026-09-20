@@ -103,7 +103,7 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
     setDatos({
       ...datos,
       formacionesAcademicas: datos.formacionesAcademicas.filter(
-        (_, i) => i !== indice
+        (_, i) => i !== indice,
       ),
     });
   };
@@ -276,7 +276,7 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
                   if (e.key === "Enter") {
                     agregarCurso(e);
                   }
-                }}  
+                }}
                 className="boton-agregar"
               >
                 Agregar
@@ -302,6 +302,15 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
               </ul>
             )}
           </div>
+          <div>
+            <button
+              type="button"
+              className="boton-agregar"
+              onClick={agregarFormacionAcademica}
+            >
+              Agregar formación
+            </button>
+          </div>
 
           {/* Lista de formaciones académicas */}
           {datos.formacionesAcademicas.length === 0 ? (
@@ -319,8 +328,7 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
                     <strong>Nivel:</strong> {formacion.nivelFormacion}
                   </p>
                   <p>
-                    <strong>Periodo:</strong>{" "}
-                    {formacion.fechaInicioAcademico} a{" "}
+                    <strong>Periodo:</strong> {formacion.fechaInicioAcademico} a{" "}
                     {formacion.fechaFinAcademico}
                   </p>
                   <p>
@@ -347,14 +355,7 @@ function FormularioAcademico({ datos, setDatos, onVolver, onSiguiente }) {
               Volver
             </button>
 
-            <button
-              type="button"
-              onClick={agregarFormacionAcademica}
-            >
-              Agregar formación
-            </button>
-
-            <button onClick={continuar}>
+            <button type="submit" onClick={continuar}>
               Continuar
             </button>
           </div>
