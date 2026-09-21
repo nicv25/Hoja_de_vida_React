@@ -1,8 +1,118 @@
+import { useState } from "react";
+import API_URL from "../api";
+
 function ResumenHojaVida({ datos, onVolver }) {
-  const finalizar = () => {
-    alert("Hoja de vida registrada correctamente.");
-    console.log("Datos completos de la hoja de vida:", datos);
-    // Más adelante, aquí se realizará la secuencia de solicitudes POST hacia Flask.
+  const [registrando, setRegistrando] = useState(false);
+
+  // Función auxiliar que hace la petición POST y maneja errores.
+  // Si el servidor responde con error, lanza una excepción con el mensaje que enseñó Flask.
+  const enviarPost = async (ruta, datosCuerpo) => {
+  const respuesta = await fetch(`${API_URL}${ruta}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(datosCuerpo),
+  });
+
+  const resultado = await respuesta.json();
+
+  if (!respuesta.ok) {
+    // Mostramos el error interno que manda Flask para saber qué falló
+    console.error("Respuesta completa del servidor:", resultado);
+    throw new Error(
+      resultado.error || resultado.mensaje || `Error al llamar a ${ruta}`
+    );
+  }
+
+  return resultado;
+};
+
+  const finalizar = async () => {
+    if (registrando) return;
+    setRegistrando(true);
+
+    try {
+      // PASO 1: Registrar la información personal.
+      const datosPersonales = {
+        foto: datos.foto ? datos.foto.name : null,
+        nombres: datos.nombres.trim(),
+        apellidos: datos.apellidos.trim(),
+        correo: datos.correo.trim(),
+        direccion: datos.direccion.trim(),
+        perfil_profesional: datos.perfilProfesional.trim(),
+      };
+
+      const respuestaPersonal = await enviarPost(
+        "/api/registrohv",
+        datosPersonales
+      );
+      const idHojaVida = respuestaPersonal.id;
+
+      // PASO 2: Registrar las formaciones académicas.
+      for (const formacion of datos.formacionesAcademicas) {
+        await enviarPost(
+          `/api/hojas-vida/${idHojaVida}/estudios_registrar`,
+          {
+            nivel_formacion: formacion.nivelFormacion,
+            institucion: formacion.institucion,
+            titulo_obtenido: formacion.tituloObtenido,
+            fecha_inicio_academico: formacion.fechaInicioAcademico,
+            fecha_fin_academico: formacion.fechaFinAcademico,
+            promedio: parseFloat(formacion.promedio),
+          }
+        );
+      }
+
+      // PASO 3: Registrar los cursos (relación directa con la hoja de vida).
+      for (const curso of datos.cursos) {
+        await enviarPost(`/api/hojas-vida/${idHojaVida}/cursos_registrar`, {
+          nombre_curso: curso,
+        });
+      }
+
+      // PASO 4: Registrar las experiencias y, dentro de cada una, sus habilidades.
+      for (const experiencia of datos.experiencias) {
+        const respuestaExperiencia = await enviarPost(
+          `/api/hojas-vida/${idHojaVida}/experiencias_registrar`,
+          {
+            empresa: experiencia.empresa,
+            cargo: experiencia.cargo,
+            area: experiencia.area,
+            fecha_ingreso: experiencia.fechaIngreso,
+            fecha_retiro: experiencia.fechaRetiro || null,
+            funciones: experiencia.funciones,
+            referencia_laboral: experiencia.referenciaLaboral,
+            certificado_laboral: experiencia.certificadoLaboral
+              ? experiencia.certificadoLaboral.name
+              : null,
+          }
+        );
+
+        const idExperiencia = respuestaExperiencia.id_experiencia;
+
+        for (const habilidad of experiencia.habilidades) {
+          await enviarPost(
+            `/api/experiencias/${idExperiencia}/habilidades_registrar`,
+            { nombre_habilidad: habilidad }
+          );
+        }
+      }
+
+      alert(
+        `¡Hoja de vida registrada correctamente! Tu ID de hoja de vida es ${idHojaVida}.`
+      );
+    } catch (error) {
+      console.error("Error en el registro completo:", error);
+
+      if (error.message === "Failed to fetch") {
+        alert(
+          "No se pudo conectar con el servidor. Verifica que Flask esté corriendo en el puerto 5000."
+        );
+      } else {
+        alert(`No se pudo completar el registro: ${error.message}`);
+      }
+    } finally {
+      setRegistrando(false);
+    }
   };
 
   const {
@@ -218,7 +328,6 @@ function ResumenHojaVida({ datos, onVolver }) {
                     </div>
                   )}
 
-                  {/* Las habilidades se muestran dentro de su experiencia */}
                   <div className="fila-resumen">
                     <span className="etiqueta-resumen">Habilidades</span>
                     <div className="valor-resumen">
@@ -248,15 +357,16 @@ function ResumenHojaVida({ datos, onVolver }) {
           </div>
 
           <div className="botones">
-            <button type="button" onClick={onVolver}>
+            <button type="button" onClick={onVolver} disabled={registrando}>
               Volver y editar
             </button>
             <button
-              type="button"
+              type="submit"
               onClick={finalizar}
               className="boton-primario"
+              disabled={registrando}
             >
-              Finalizar registro
+              {registrando ? "Registrando..." : "Finalizar registro"}
             </button>
           </div>
         </div>

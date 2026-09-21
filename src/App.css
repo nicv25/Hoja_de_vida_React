@@ -499,3 +499,11 @@ HABILIDADES POR EXPERIENCIA
 .experiencia-card > .boton-eliminar {
   margin-top: 12px;
 }
+
+/* Botones deshabilitados mientras se registra la hoja de vida */
+.botones button:disabled,
+.boton-primario:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
